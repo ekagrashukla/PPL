@@ -370,8 +370,9 @@ const getcommentService = async (req,res) => {
     const postid = req.body.postid
     const limit = req.body.limit
     const skip = req.body.skip
-    const data = await Post.find({"_id":postid}).limit(limit).skip(skip)
-    res.send(data)
+    const data = await Post.findOne({"_id":postid},{comments:{$slice:[skip, limit]}})
+    console.log(data.comments)
+    res.send(data.comments)
 }
 
 const flagpostService = async(req,res) => {
