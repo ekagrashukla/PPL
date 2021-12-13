@@ -4,7 +4,8 @@ const Post = mongoose.model(
     "Post",
     new mongoose.Schema({
         postUser:{
-            type: String
+            type: String,
+            required: true
         },
         title:{
             type: String

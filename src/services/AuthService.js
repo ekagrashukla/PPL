@@ -227,7 +227,9 @@ const getpostService = async (req,res) => {
 const likepostService = async(req,res) => {
     try {
         const postid = req.params.postid
-        const email = req.body.email
+        const token = req.headers.authorization.split(' ')[1]
+        const decode = jwt.verify(token,'verysecretvalue')
+        const email = decode.email
 
         Post.aggregate([{$project:{"isPresent":{$in:[email,"$likedby"]}}}])
         .then((response)=>{
@@ -262,7 +264,9 @@ const likepostService = async(req,res) => {
 const unlikepostService = async(req,res) => {
     try {
         const postid = req.params.postid;
-        const email = req.body.email;
+        const token = req.headers.authorization.split(' ')[1]
+        const decode = jwt.verify(token,'verysecretvalue')
+        const email = decode.email;
         Post.aggregate([{$project:{"isPresent":{$in:[email,"$likedby"]}}}])
         .then((response)=>{
             console.log(response[0].isPresent)
@@ -324,14 +328,12 @@ const editprofileServices = async (req,res) => {
 }
 
 const addcommentService = async (req,res) => {
+    const token = req.headers.authorization.split(' ')[1]
+    const decode = jwt.verify(token,'verysecretvalue')
+    console.log(decode)
     const comment = req.body.comment
     const postid = req.body.postid
-    const obj = {
-        creatorId: req.body.email,
-        creatorName: req.body.name,
-        comment: req.body.comment
-    }
-    Post.findOneAndUpdate({"_id":postid},{$push:{"comments":{creatorId: req.body.email,creatorName: req.body.name,comment: req.body.comment}}})
+    Post.findOneAndUpdate({"_id":postid},{$push:{"comments":{creatorId: decode.email,creatorName: req.body.name,comment: req.body.comment}}})
     .then((response)=>{
         Post.findOneAndUpdate(
             {_id:postid},
@@ -378,7 +380,9 @@ const getcommentService = async (req,res) => {
 const flagpostService = async(req,res) => {
     try {
         const postid = req.params.postid
-        const email = req.body.email
+        const token = req.headers.authorization.split(' ')[1]
+        const decode = jwt.verify(token,'verysecretvalue')
+        const email = decode.email
 
         Post.aggregate([{$project:{"isPresent":{$in:[email,"$flagby"]}}}])
         .then((response)=>{
