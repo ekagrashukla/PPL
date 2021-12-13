@@ -1,0 +1,27 @@
+const express = require('express')
+const router = express.Router()
+const multer = require('multer')
+const {upload} = require('../services/AuthService')
+
+const AuthController = require('../controllers/AuthController')
+const authenticate = require('../middlewares/authenticate')
+
+router.post('/register', AuthController.register)
+router.get('/verifyuserbyemail/:token', AuthController.verifyuserbyemail)
+router.post('/login', AuthController.login)
+router.post("/forgotpassword/:emailid", AuthController.forgotpassword)
+router.post("/resetpassword/:emailid", AuthController.resetpassword)
+router.post("/post", upload.single('post'),authenticate, AuthController.addpost)
+router.get("/post/:postid", AuthController.getpostbyid)
+router.get("/getpost", AuthController.getpost)
+router.put("/post/like/:postid", AuthController.likepost)
+router.put("/post/unlike/:postid", AuthController.unlikepost)
+router.get("/myprofile", authenticate, AuthController.userprofile)
+router.put("/updateprofile",authenticate, AuthController.editProfile)
+router.post("/comment", AuthController.addComment)
+router.post("/changepassword", authenticate, AuthController.changePassword)
+router.get('/comments', AuthController.getComments)
+router.put("/post/flag/:postid", AuthController.flagPost)
+router.post("/logout", AuthController.logout)
+
+module.exports = router
