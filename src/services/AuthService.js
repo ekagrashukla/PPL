@@ -312,7 +312,6 @@ const editprofileServices = async (req,res) => {
         if (typeof req.body.email !== 'undefined' || (typeof req.body.password !== 'undefined')){
             throw new Error
         }
-         
         const token = req.headers.authorization.split(' ')[1]
         const decode = jwt.verify(token,config.SECRET)
         const email = decode.email
@@ -422,6 +421,27 @@ const logoutService = async (req,res) => {
     res.send("logged out")
 } 
 
+const editpostService = async (req,res) => {
+    const postid = req.params.postid
+    let post = {
+    }
+    const info = req.body
+    try {
+        // const fields = Object.keys(info)
+        for (const i in info){
+            if(i== "postuser" || i=="creatorname"){
+                res.send(`${i} field can't be updated`)
+            }
+            post[i] = info[i]
+            console.log(i)
+        }
+        const data = await Post.findOneAndUpdate({"_id":postid},post)
+        res.send(post)
+    } catch (error) {
+        res.send(error)
+    }
+}
+
 module.exports = {
     registerService, verifyuserbyemailService, 
     loginService, forgotpasswordService, 
@@ -430,5 +450,5 @@ module.exports = {
     likepostService, unlikepostService, userprofileService,
     editprofileServices, addcommentService, 
     changepasswordService, upload, getcommentService,
-    flagpostService, logoutService
+    flagpostService, logoutService, editpostService
 }

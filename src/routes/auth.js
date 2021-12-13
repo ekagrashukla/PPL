@@ -23,5 +23,6 @@ router.post("/changepassword", authenticate, AuthController.changePassword)
 router.get('/comments', AuthController.getComments)
 router.put("/post/flag/:postid", AuthController.flagPost)
 router.post("/logout", authenticate,AuthController.logout)
+router.put("/post/:postid", AuthController.editpost)
 
 module.exports = router

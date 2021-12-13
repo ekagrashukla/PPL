@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 const { registerService, verifyuserbyemailService, loginService, forgotpasswordService, 
         resetpasswordService, addpostService, getpostbypostidService, getpostService, 
         likepostService, unlikepostService, userprofileService, editprofileServices, 
-        addcommentService, changepasswordService, getcommentService, flagpostService, logoutService} = require('../services/AuthService');
+        addcommentService, changepasswordService, getcommentService, flagpostService, logoutService, editpostService} = require('../services/AuthService');
 
 const register = (req,res)          => bcrypt.hash(req.body.password, 10, (err,hashedPass)=> registerService(err, hashedPass,req,res));
 const verifyuserbyemail = (req,res) => verifyuserbyemailService(req,res);
@@ -20,8 +20,10 @@ const addComment = (req,res)        => addcommentService(req,res);
 const changePassword = (req,res)    => changepasswordService(req,res);
 const getComments = (req,res)       => getcommentService(req,res);
 const flagPost = (req,res)          => flagpostService(req,res);
-const logout = (req,res)            => logoutService(req,res)
+const logout = (req,res)            => logoutService(req,res);
+const editpost = (req,res)          => editpostService(req,res);
+
 module.exports = {
     register, userprofile, verifyuserbyemail,addpost, login, editProfile, forgotpassword, resetpassword, getpostbyid, getpost, likepost, unlikepost, addComment,
-    changePassword, getComments, flagPost, logout
+    changePassword, getComments, flagPost, logout, editpost
 }
